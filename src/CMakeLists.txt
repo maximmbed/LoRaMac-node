@@ -23,12 +23,12 @@ cmake_minimum_required(VERSION 3.6)
 #---------------------------------------------------------------------------------------
 
 # Allow switching of target platform
-set(BOARD_LIST NAMote72 NucleoL073 NucleoL152 NucleoL476 SAMR34 SKiM880B SKiM980A SKiM881AXL B-L072Z-LRWAN1)
+set(BOARD_LIST NAMote72 NucleoL073 NucleoL152 NucleoL476 SAML34 SKiM880B SKiM980A SKiM881AXL B-L072Z-LRWAN1 MAX32660LoRa)
 set(BOARD NucleoL073 CACHE STRING "Default target platform is NucleoL073")
 set_property(CACHE BOARD PROPERTY STRINGS ${BOARD_LIST})
 
 # Allow switching of MBED shields
-set(MBED_RADIO_SHIELD_LIST SX1272MB2DAS SX1276MB1LAS SX1276MB1MAS SX1261MBXBAS SX1262MBXCAS SX1262MBXDAS )
+set(MBED_RADIO_SHIELD_LIST SX126XMAX32660 SX1272MB2DAS SX1276MB1LAS SX1276MB1MAS SX1261MBXBAS SX1262MBXCAS SX1262MBXDAS )
 set(MBED_RADIO_SHIELD SX1261MBXBAS CACHE STRING "Default MBED radio shield is SX1261MBXBAS")
 set_property(CACHE MBED_RADIO_SHIELD PROPERTY STRINGS ${MBED_RADIO_SHIELD_LIST})
 
@@ -183,6 +183,19 @@ elseif(BOARD STREQUAL B-L072Z-LRWAN1)
 
     # Configure radio
     set(RADIO sx1276 CACHE INTERNAL "Radio sx1276 selected")
+
+elseif(BOARD STREQUAL MAX32660LoRa)
+    # Configure toolchain for MAX32660LoRa
+    set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/boards/mcu/max326xx/CMSIS/Device/Maxim/MAX32660/Source/GCC/max32660.ld)
+    include(max32660)
+
+    # Build platform specific board implementation
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/boards/MAX32660LoRa)
+    set(MBED_RADIO_SHIELD SX126XMAX32660 CACHE STRING "Default MBED radio shield is SX126XMAX32660")
+
+    # Configure radio
+    set(RADIO sx126x CACHE INTERNAL "Radio sx126x selected")
+
 endif()
 
 #---------------------------------------------------------------------------------------

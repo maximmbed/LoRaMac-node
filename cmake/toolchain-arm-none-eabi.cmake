@@ -54,7 +54,9 @@ else()
 endif()
 
 # Perform compiler test with static library
-set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+# jxm set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+set(CMAKE_C_COMPILER_WORKS 1)
+set(CMAKE_CXX_COMPILER_WORKS 1)
 
 #---------------------------------------------------------------------------------------
 # Preset some general GCC Options

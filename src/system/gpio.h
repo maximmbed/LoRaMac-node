@@ -43,7 +43,6 @@ typedef enum
 {
     MCU_PINS,
     IOE_PINS,
-
     // Not connected
     NC = (int)0xFFFFFFFF
 }PinNames;
@@ -106,6 +105,7 @@ typedef enum
  */
 typedef void( GpioIrqHandler )( void* context );
 
+#ifdef STM32_SPECIFIC_SOMETHING
 /*!
  * Structure for the GPIO
  */
@@ -119,6 +119,22 @@ typedef struct
     void* Context;
     GpioIrqHandler* IrqHandler;
 }Gpio_t;
+#else
+typedef struct {
+    void *Instance;
+    PinNames pin;
+    int index;
+    void *port;
+    uint32_t mask;
+    volatile uint32_t *reg_out;
+    volatile uint32_t *reg_in;
+
+
+    int pinIndex;
+    void* Context;
+    GpioIrqHandler* IrqHandler;
+} Gpio_t;
+#endif
 
 /*!
  * \brief Initializes the given GPIO object

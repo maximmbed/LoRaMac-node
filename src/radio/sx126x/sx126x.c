@@ -28,6 +28,7 @@
 #include "sx126x.h"
 #include "sx126x-board.h"
 
+#define USE_TCXO
 /*!
  * \brief Radio registers definition
  */
@@ -179,7 +180,7 @@ void SX126xSetCrcPolynomial( uint16_t polynomial )
 void SX126xSetWhiteningSeed( uint16_t seed )
 {
     uint8_t regValue = 0;
-    
+
     switch( SX126xGetPacketType( ) )
     {
         case PACKET_TYPE_GFSK:
